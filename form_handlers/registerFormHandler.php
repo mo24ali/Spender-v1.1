@@ -1,24 +1,11 @@
 <?php
-require "connexion.php";
+require "../config/connexion.php";
+require "../models/user.php";
 
-$firstname = htmlspecialchars($_POST['firstname']);
-$lastname = htmlspecialchars($_POST['lastname']);
-$email = htmlspecialchars($_POST['emailRegister']);
-$password = password_hash($_POST['passwordRegister'], PASSWORD_DEFAULT);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $query = $conn->prepare(
-        "INSERT INTO users(firstname, lastname, email, password) VALUES (?, ?, ?, ?)"
-    );
+$user = new User($conn);
+$user->register($_POST['firstname'],$_POST['lastname'],$_POST['passwordRegister'],$_POST['emailRegister']);
 
-    $query->bind_param("ssss", $firstname, $lastname, $email, $password);
+header("Location: ../index.php?susccess=registered");
 
-    if ($query->execute()) {
-        echo "Registered successfully";
-        header("Location: ../index.php");
-        exit();
-    } else {
-        echo "Registration failed";
-    }
-}
 ?>

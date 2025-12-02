@@ -66,7 +66,7 @@
     <!-- LOGIN MODAL -->
     <div id="login" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 hidden">
         <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-80 space-y-4"
-              action="php/loginFormHandler.php" method="POST">
+              action="form_handlers/loginFormHandler.php" method="POST">
 
             <h2 class="text-xl font-bold text-center dark:text-white">Login</h2>
 
@@ -89,7 +89,7 @@
     <!-- REGISTER MODAL -->
     <div id="register" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 hidden">
         <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
-              action="php/formHnadler.php" method="POST">
+              action="form_handlers/registerFormHandler.php" method="POST">
 
             <h2 class="text-xl font-bold text-center dark:text-white">Register</h2>
 
