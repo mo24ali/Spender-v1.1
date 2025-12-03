@@ -1,0 +1,31 @@
+<?php
+    class Expense{
+        private $conn;
+
+        public function __construct($conn)
+        {
+            $this->conn = $conn;
+        }
+
+
+        public function ajouterExpense($expenseTitle, $expenseDescription, $price, $dueDate){
+            $request = "insert into expense(expenseTitle,description,price,dueDate) 
+            values ('$expenseTitle','$expenseDescription',$price,'$dueDate')";
+            $query = mysqli_query($this->conn,$request);
+            if(isset($query)){
+                header("Location: ../expenses.php");
+            }
+        }
+        public function supprimerExpense($expenseId){
+            $request = "delete from expense where expenseId=$expenseId";
+            $query = mysqli_query($this->conn,$request);
+            if(isset($query)){
+                header("Location: ../expenses.php");
+            }
+        }
+        public function modifierExpense(){
+            
+        }
+    }
+
+?>

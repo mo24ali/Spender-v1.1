@@ -3,7 +3,9 @@ DROP DATABASE IF EXISTS spender;
 CREATE DATABASE smart_wallet;
 
 USE smart_wallet;
-
+drop table users;
+drop table income;
+drop table expense;
 CREATE TABLE
     expense (
         expenseId INT NOT NULL AUTO_INCREMENT,
@@ -33,7 +35,7 @@ CREATE TABLE users(
         join_date date default (CURRENT_DATE)
     );
 
-    
+
 INSERT INTO
     expense (expenseTitle, description, price, dueDate)
 VALUES

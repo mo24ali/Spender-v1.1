@@ -8,9 +8,9 @@ class User {
     }
 
     public function register($firstname,$lastname, $email, $password){
-        // $hashed = password_hash($password, PASSWORD_DEFAULT);
+         $hashedPass = password_hash($password, PASSWORD_DEFAULT);
 
-        $request = "INSERT INTO users (firstname, lastname, email, password) VALUES ('$firstname','$lastname', '$email', '$password')";
+        $request = "INSERT INTO users (firstname, lastname, email, password) VALUES ('$firstname','$lastname', '$email', '$hashedPass')";
         return mysqli_query($this->conn, $request);
     }
 

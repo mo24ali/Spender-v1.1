@@ -25,10 +25,10 @@
             <a href="#" class="text-xl font-bold text-blue-600 dark:text-white">Spender</a>
 
             <div class="hidden lg:flex space-x-10">
-                <a href="#" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Dashboard</a>
+                <a href="dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Dashboard</a>
                 <a href="transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Transactions</a>
-                <a href="payments.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Payments</a>
-                <a href="exchange.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Exchange</a>
+                <a href="expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Expenses</a>
+                <a href="incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Incomes</a>
                 <a href="support.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Support</a>
             </div>
 
@@ -42,9 +42,7 @@
     <main class="max-w-6xl mx-auto mt-20 px-4">
         <div class="flex items-center justify-between mb-10">
 
-            <button id="newPaymentsBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition">
-                + New Payment
-            </button>
+            
 
             <div class="flex space-x-4">
                 <select id="filterSelect" class="rounded-lg px-3 py-2 border dark:bg-gray-800 dark:text-white">
@@ -56,6 +54,17 @@
                     <option disabled selected>Select month</option>
                     <option value="01">January</option>
                     <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+
                 </select>
             </div>
         </div>
@@ -66,15 +75,15 @@
     <!-- LOGIN MODAL -->
     <div id="login" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 hidden">
         <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-80 space-y-4"
-              action="form_handlers/loginFormHandler.php" method="POST">
+            action="form_handlers/loginFormHandler.php" method="POST">
 
             <h2 class="text-xl font-bold text-center dark:text-white">Login</h2>
 
             <input type="text" name="emailLog" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white"
-                   placeholder="Email">
+                placeholder="Email">
 
             <input type="password" name="passwordLog" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white"
-                   placeholder="Password">
+                placeholder="Password">
 
             <button class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition">
                 Log In
@@ -89,24 +98,24 @@
     <!-- REGISTER MODAL -->
     <div id="register" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 hidden">
         <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
-              action="form_handlers/registerFormHandler.php" method="POST">
+            action="form_handlers/registerFormHandler.php" method="POST">
 
             <h2 class="text-xl font-bold text-center dark:text-white">Register</h2>
 
             <input type="text" name="lastname" placeholder="Lastname"
-                   class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
 
             <input type="text" name="firstname" placeholder="Firstname"
-                   class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
 
             <input type="text" name="emailRegister" placeholder="Email"
-                   class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
 
             <input type="password" name="passwordRegister" placeholder="Password"
-                   class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
 
             <input type="password" placeholder="Confirm Password"
-                   class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
 
             <button class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition">
                 Register
@@ -114,6 +123,8 @@
         </form>
     </div>
 
+
+   
     <script src="js/auth.js"></script>
     <script src="js/validators.js"></script>
 </body>
