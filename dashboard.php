@@ -13,7 +13,7 @@
 ?>
 
 
-<body class="bg-gray-50 dark:bg-gray-900">
+<body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
 
     <!-- NAVBAR -->
     <header class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm">
@@ -42,6 +42,10 @@
             </button>
         </div>
         <p class="text-gray-600 dark:text-gray-300 text-xl">No data available yet — start by adding new payments.</p>
+
+        <div id="chart">
+            
+        </div>
     </main>
 
     <!-- ADD EXPENSE MODAL -->
@@ -61,6 +65,9 @@
     <script src="js/auth.js"></script>
     <script src="js/forms.js"></script>
     <script src="js/validators.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 </body>
 
 

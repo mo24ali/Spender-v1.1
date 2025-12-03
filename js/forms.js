@@ -16,3 +16,9 @@ function showAddExpenseModal() {
 // document.getElementById("addExpense").addEventListener('click', () => {
 //     document.getElementById("addExpense").classList.toggle('hidden');
 // })
+
+
+function showAddIncome(){
+    document.getElementById("addIncome").classList.toggle('hidden');
+    console.log("clicked");
+}
