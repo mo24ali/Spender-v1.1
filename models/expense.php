@@ -23,8 +23,17 @@
                 header("Location: ../expenses.php");
             }
         }
-        public function modifierExpense(){
-            
+        public function modifierExpense($expenseId, $expenseTitle, $newExpenseDesc , $newExpensePrice, $expDueDate){
+            $request = "update expense 
+                        set expenseTitle='$expenseTitle', 
+                            description='$newExpenseDesc', 
+                            price='$newExpensePrice', 
+                            dueDate='$expDueDate' 
+                        where expenseId='$expenseId'";
+            $query=mysqli_query($this->conn, $request); /////////////////////
+            if(isset($query)){
+                header("Location: ../expenses.php");
+            }
         }
     }
 

@@ -23,7 +23,17 @@
                 header("Location: ../incomes.php");
             }
         }
-        public function modifierExpense(){
+        public function modifierIncome($incomeId, $incomeTitle, $newincomeDesc , $newincomePrice, $incGetDate){
+            $request = "update income 
+                        set incomeTitle='$incomeTitle', 
+                            description='$newincomeDesc', 
+                            price='$newincomePrice', 
+                            getIncomeDate='$incGetDate' 
+                        where incomeId='$incomeId';";
+            $query=mysqli_query($this->conn, $request);
+            if(isset($query)){
+                header("Location: ../incomes.php");
+            }
             
         }
     }

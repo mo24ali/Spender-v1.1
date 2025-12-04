@@ -1,14 +1,10 @@
 <?php
 
     require "../config/connexion.php";
+    require "../models/income.php";
 
 
     $id = $_GET['id'];
-    $request = "delete from income where incomeId=$id";
-    $query = mysqli_query($conn,$request);
-    if(isset($query)){
-        header("Location: ../incomes.php");
-    }
-    
-
+    $inc = new Income($conn);
+    $inc -> supprimerIncome($id);
 ?>

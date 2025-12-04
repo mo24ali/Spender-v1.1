@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/forms.js"></script>
+    <script src="js/validators.js"></script>
     <title>Incomes</title>
 </head>
 
-<?php
-
-?>
 
 
 <body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
@@ -47,7 +47,7 @@
 
         <table border="2" cellspacing="2" cellpadding="8">
             <thead>
-                <tr>
+                <tr>    
                     <th>Income ID</th>
                     <th>Income Title</th>
                     <th>Description</th>
@@ -74,7 +74,7 @@
                     echo "<td>" . htmlspecialchars($row['getIncomeDate']) . "</td>";
 
                     echo "<td>
-                        <button><a href='edit_handler/updateIncome.php?id={$id}'>Edit</a></button>
+                        <button><a href='update_handlers/updateIncome.php?id={$id}'>Edit</a></button>
                         <button><a href='delete_handlers/deleteIncome.php?id={$id}'>Delete</a></button>
                       </td>";
                     echo "</tr>";
@@ -88,20 +88,18 @@
     <div id="addIncome" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 hidden">
         <form id="addIncomeForm" action="form_handlers/incomeHandler.php" method="post" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
             <label for="incomeName" class="text-white">Income title</label>
-            <input type="text" id="incomeName" name="income_title" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+            <input type="text" id="incomeName" name="income_title" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white"  value="">
             <label for="incomeDescription" class="text-white"> Description : </label>
-            <input type="text" id="incomeDescription" name="income_description" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+            <input type="text" id="incomeDescription" name="income_description" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white" value="">
             <label for="incomePrice" class="text-white"> Salary : </label>
-            <input type="text" id="incomePrice" name="income_price" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+            <input type="text" id="incomePrice" name="income_price" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white"  value="">
             <label for="incomeDate" class="text-white">Getting income date :</label>
-            <input type="date" id="incomeDate" name="income_date" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+            <input type="date" id="incomeDate" name="income_date" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white" value="">
             <button type="submit" id="validateIncome" class="rounded bg-blue-500 hover:bg-blue-300 hover:text-white transform duration-300 py-2 px-1">Add income</button>
         </form>
     </div>
 
-    <script src="js/auth.js"></script>
-    <script src="js/forms.js"></script>
-    <script src="js/validators.js"></script>
+    
 </body>
 
 

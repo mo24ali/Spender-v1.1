@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <script src="js/forms.js"></script>
+    <script src="js/auth.js"></script>
+    <!-- <script src="js/validators.js"></script> -->
     <title>Expenses</title>
 </head>
 
@@ -83,23 +87,62 @@
 
     </main>
     <!-- ADD EXPENSE MODAL -->
-    <div id="addExpense" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 hidden">
-        <form id="addExpenseForm" action="form_handlers/expensesHandler.php" method="post" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
+
+
+    <div id="addExpense" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 
+    <?php echo isset($_GET['id']) ? '' : 'hidden'; ?>">
+
+        <?php
+        require "config/connexion.php";
+
+        $expense = null;
+        $modalId = null;
+
+        if (isset($_GET['id'])) {
+            $modalId = intval($_GET['id']);
+            $query="SELECT * FROM expense WHERE expenseId = $modalId";
+            $request = mysqli_query($conn, $query);
+            $expense = mysqli_fetch_assoc($request);
+        }
+        ?>
+
+        <form id="addExpenseForm" action="form_handlers/expensesHandler.php" method="post"
+            class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
+
+            <?php if ($modalId): ?>
+                <input type="hidden" name="expense_id" value="<?php echo $modalId; ?>">
+            <?php endif; ?>
+
             <label for="expenseName" class="text-white">Expense title</label>
-            <input type="text" id="expenseName" name="expense_title" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
-            <label for="expenseDescription" class="text-white"> Description : </label>
-            <input type="text" id="expenseDescription" name="expense_description" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
-            <label for="expensePrice" class="text-white"> cost : </label>
-            <input type="text" id="expensePrice" name="expense_price" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
-            <label for="expenseDate" class="text-white">Due to :</label>
-            <input type="date" id="expenseDate" name="expense_date" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
-            <button type="submit" id="validateExpense" class="rounded bg-blue-500 hover:bg-blue-300 hover:text-white transform duration-300 py-2 px-1">Add expense</button>
+            <input type="text" id="expenseName" name="expense_title"
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white"
+                value="<?php echo $expense['expenseTitle'] ?? ''; ?>">
+
+            <label for="expenseDescription" class="text-white">Description</label>
+            <input type="text" id="expenseDescription" name="expense_description"
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white"
+                value="<?php echo $expense['description'] ?? ''; ?>">
+
+            <label for="expensePrice" class="text-white">Cost</label>
+            <input type="text" id="expensePrice" name="expense_price"
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white"
+                value="<?php echo $expense['price'] ?? ''; ?>">
+
+            <label for="expenseDate" class="text-white">Due Date</label>
+            <input type="date" id="expenseDate" name="expense_date"
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white"
+                value="<?php echo $expense['dueDate'] ?? ''; ?>">
+
+            <button type="submit" id="validateExpense"
+                class="rounded bg-blue-500 hover:bg-blue-300 text-white p-2 w-full">
+                <?php echo $modalId ? "Update Expense" : "Add Expense"; ?>
+            </button>
+
         </form>
+
     </div>
 
-    <script src="js/forms.js"></script>
-    <script src="js/auth.js"></script>
-    <!-- <script src="js/validators.js"></script> -->
+
 </body>
 
 
