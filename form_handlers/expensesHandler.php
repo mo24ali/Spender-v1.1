@@ -1,3 +1,4 @@
+
 <?php
 
 require "../config/connexion.php";
@@ -10,18 +11,18 @@ $desc  = $_POST['expense_description'];
 $price = $_POST['expense_price'];
 $date  = $_POST['expense_date'];
 
-if (isset($_POST['expense_id'])) {
+$id = $_GET['id'] ?? null;
 
-    $id = $_POST['expense_id'];
+if (!empty($id)) {
     $exp->modifierExpense($id, $title, $desc, $price, $date);
-
     header("Location: ../expenses.php");
     exit;
-
 } else {
-
     $exp->ajouterExpense($title, $desc, $price, $date);
-
     header("Location: ../expenses.php");
     exit;
 }
+
+
+
+?>

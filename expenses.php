@@ -99,19 +99,15 @@
         $modalId = null;
 
         if (isset($_GET['id'])) {
-            $modalId = intval($_GET['id']);
+            $modalId = $_GET['id'];
             $query="SELECT * FROM expense WHERE expenseId = $modalId";
             $request = mysqli_query($conn, $query);
             $expense = mysqli_fetch_assoc($request);
         }
         ?>
 
-        <form id="addExpenseForm" action="form_handlers/expensesHandler.php" method="post"
+        <form id="addExpenseForm" action="form_handlers/expensesHandler.php<?php echo "?id=".$modalId?>" method="post"
             class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
-
-            <?php if ($modalId): ?>
-                <input type="hidden" name="expense_id" value="<?php echo $modalId; ?>">
-            <?php endif; ?>
 
             <label for="expenseName" class="text-white">Expense title</label>
             <input type="text" id="expenseName" name="expense_title"

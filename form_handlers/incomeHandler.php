@@ -9,18 +9,17 @@ $title = $_POST['income_title'];
 $description = $_POST['income_description'];
 $price = $_POST['income_price'];
 $date = $_POST['income_date'];
+$id = $_GET['id'] ?? null;
+if (!empty($id)) {
 
-if (isset($_POST['income_id'])) {
-
-    $id = $_POST['income_id'];
-    $exp->modifierIncome($id, $title, $desc, $price, $date);
-
+    $income->modifierIncome($id, $title, $desc, $price, $date);
     header("Location: ../incomes.php");
     exit;
 } else {
 
-    $exp->ajouterIncome($title, $desc, $price, $date);
+    $income->ajouterIncome($title, $desc, $price, $date);
 
     header("Location: ../incomes.php");
     exit;
 }
+?>
