@@ -28,7 +28,7 @@
 <!-- LOGIN MODAL -->
 <div id="loginForm" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 hidden">
     <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-80 space-y-4"
-          action="form_handlers/loginFormHandler.php" method="POST">
+          action="auth/loginFormHandler.php" method="POST">
         <h2 class="text-xl font-bold text-center dark:text-white">Login</h2>
         <input id="logMail" type="text" name="emailLog" placeholder="Email" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
         <input id="logPass" type="password" name="passwordLog" placeholder="Password" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
@@ -40,7 +40,7 @@
 <!-- REGISTER MODAL -->
 <div id="register" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 hidden">
     <form class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
-          action="form_handlers/registerFormHandler.php" method="POST">
+          action="auth/registerFormHandler.php" method="POST">
         <h2 class="text-xl font-bold text-center dark:text-white">Register</h2>
         <input type="text" name="firstname" placeholder="Firstname" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">
         <input type="text" name="lastname" placeholder="Lastname" class="w-full p-2 border rounded-lg dark:bg-gray-900 dark:text-white">

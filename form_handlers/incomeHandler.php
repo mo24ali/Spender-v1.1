@@ -2,6 +2,8 @@
 require "../config/connexion.php";
 require "../models/income.php";
 
+
+session_start();
 $income = new Income($conn);
 
 
@@ -10,6 +12,7 @@ $description = $_POST['income_description'];
 $price = $_POST['income_price'];
 $date = $_POST['income_date'];
 $id = $_GET['id'] ?? null;
+$userId = $_SESSION['user_id'];
 if (!empty($id)) {
 
     $income->modifierIncome($id, $title, $desc, $price, $date);
@@ -17,7 +20,7 @@ if (!empty($id)) {
     exit;
 } else {
 
-    $income->ajouterIncome($title, $desc, $price, $date);
+    $income->ajouterIncome($title, $desc, $price, $date,$userId);
 
     header("Location: ../incomes.php");
     exit;

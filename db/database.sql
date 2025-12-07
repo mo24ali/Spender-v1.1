@@ -3,37 +3,38 @@ DROP DATABASE IF EXISTS smart_wallet;
 CREATE DATABASE smart_wallet;
 
 USE smart_wallet;
-drop table users;
+
 drop table income;
 drop table expense;
-CREATE TABLE
-    expense (
-        expenseId INT NOT NULL AUTO_INCREMENT,
-        expenseTitle VARCHAR(50) NOT NULL,
-        description TEXT,
-        price DECIMAL(10, 2),
-        dueDate DATE,
-        PRIMARY KEY (expenseId)
-    );
+CREATE TABLE users (
+    userId INT PRIMARY KEY AUTO_INCREMENT,
+    firstname VARCHAR(50) NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    join_date DATE DEFAULT (CURRENT_DATE)
+);
 
-CREATE TABLE
-    income (
-        incomeId INT NOT NULL AUTO_INCREMENT,
-        incomeTitle VARCHAR(50) NOT NULL,
-        description TEXT,
-        price DECIMAL(10, 2),
-        getIncomeDate DATE,
-        PRIMARY KEY (incomeId)
-    );
+CREATE TABLE expense (
+    expenseId INT PRIMARY KEY AUTO_INCREMENT,
+    expenseTitle VARCHAR(50) NOT NULL,
+    description TEXT,
+    user_id INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    dueDate DATE,
+    state VARCHAR(20) DEFAULT 'not paid',
+    CONSTRAINT fk_expense_user FOREIGN KEY (user_id) REFERENCES users(userId)
+);
 
-CREATE TABLE users(
-        userId int primary key AUTO_INCREMENT,
-        firstname varchar(20) not null,
-        lastname varchar(20) not null,
-        password varchar(20) not null,
-        email varchar(20) not null,
-        join_date date default (CURRENT_DATE)
-    );
+CREATE TABLE income (
+    incomeId INT PRIMARY KEY AUTO_INCREMENT,
+    incomeTitle VARCHAR(50) NOT NULL,
+    description TEXT,
+    user_id INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    getIncomeDate DATE,
+    CONSTRAINT fk_income_user FOREIGN KEY (user_id) REFERENCES users(userId)
+);
 
 
 INSERT INTO

@@ -8,9 +8,9 @@
         }
 
 
-        public function ajouterExpense($expenseTitle, $expenseDescription, $price, $dueDate){
-            $request = "insert into expense(expenseTitle,description,price,dueDate) 
-            values ('$expenseTitle','$expenseDescription',$price,'$dueDate')";
+        public function ajouterExpense($expenseTitle, $expenseDescription, $price, $dueDate,$userId){
+            $request = "insert into expense(expenseTitle,description,user_id,price,dueDate) 
+            values ('$expenseTitle','$expenseDescription','$userId',$price,'$dueDate')";
             $query = mysqli_query($this->conn,$request);
             if(isset($query)){
                 header("Location: ../expenses.php");

@@ -26,9 +26,11 @@
                 <a href="support.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Support</a>
             </div>
 
-            <button onclick="logout()" class="hidden lg:block bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition">
+            <a href="auth/logout.php">
+                <button class="hidden lg:block bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition">
                 Logout
-            </button>
+                </button>
+            </a>
         </nav>
     </header>
 
@@ -70,7 +72,9 @@
                         $
                         <?php
                         require "config/connexion.php";
-                        $query = "select SUM(price) as total from income";
+                        session_start();
+                        $userId = $_SESSION['user_id'];
+                        $query = "select SUM(price) as total from income where user_id=$userId";
                         $request = mysqli_query($conn, $query);
                         $row = mysqli_fetch_assoc($request);
                         echo $row['total'];
@@ -115,7 +119,8 @@
                         $
                         <?php
                         require "config/connexion.php";
-                        $query = "select SUM(price) as total from expense";
+                        $userId = $_SESSION['user_id'];
+                        $query = "select SUM(price) as total from expense where user_id=$userId";
                         $request = mysqli_query($conn, $query);
                         $row = mysqli_fetch_assoc($request);
                         echo $row['total'];
@@ -204,58 +209,58 @@
 
         </div>
 
-    </ma
-    in>
+        </ma
+            in>
 
-    <!-- ADD EXPENSE MODAL -->
-    <div id="addExpense" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 hidden">
-        <form id="addExpenseForm" action="form_handlers/expensesHandler.php" method="post" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
-            <label for="expenseName" class="text-white">Expense title</label>
-            <input type="text" id="expenseName" name="expense_title" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
-            <label for="expenseDescription" class="text-white"> Description : </label>
-            <input type="text" id="expenseDescription" name="expense_description" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
-            <label for="expensePrice" class="text-white"> cost : </label>
-            <input type="text" id="expensePrice" name="expense_price" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
-            <label for="expenseDate" class="text-white">Due to :</label>
-            <input type="date" id="expenseDate" name="expense_date" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
-            <button type="submit" id="validateExpense" class="rounded bg-blue-500 hover:bg-blue-300 hover:text-white transform duration-300 py-2 px-1">Add expense</button>
-        </form>
-    </div>
-
-
-    <?php
-    require "config/connexion.php";
-
-    $requestExpense = "SELECT price, dueDate, Month(dueDate) as month FROM expense";
-    $queryExpense = mysqli_query($conn, $requestExpense);
-    $requestIncome = "SELECT price, getIncomeDate , Month(getIncomeDate) as month FROM income";
-    $queryincome = mysqli_query($conn,$requestIncome);
-    $dataExpense = [];
-    $dataIncome = [];
-
-    while ($row = mysqli_fetch_assoc($queryExpense)) {
-        $dataExpense[] = [
-            "price" => (float)$row["price"],
-            "date"  => $row["dueDate"],
-            "month" => $row["month"]
-        ];
-    }
+        <!-- ADD EXPENSE MODAL -->
+        <div id="addExpense" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 hidden">
+            <form id="addExpenseForm" action="form_handlers/expensesHandler.php" method="post" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
+                <label for="expenseName" class="text-white">Expense title</label>
+                <input type="text" id="expenseName" name="expense_title" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+                <label for="expenseDescription" class="text-white"> Description : </label>
+                <input type="text" id="expenseDescription" name="expense_description" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+                <label for="expensePrice" class="text-white"> cost : </label>
+                <input type="text" id="expensePrice" name="expense_price" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+                <label for="expenseDate" class="text-white">Due to :</label>
+                <input type="date" id="expenseDate" name="expense_date" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+                <button type="submit" id="validateExpense" class="rounded bg-blue-500 hover:bg-blue-300 hover:text-white transform duration-300 py-2 px-1">Add expense</button>
+            </form>
+        </div>
 
 
-    while($row = mysqli_fetch_assoc($queryincome)){
-        $dataIncome[] = [
-            "price" => (float)$row["price"],
-            "date" => $row["getIncomeDate"],
-            "month" => $row["month"]
-        ];
-    }
-    ?>
-    <script>
-        let exp = <?php echo json_encode($dataExpense) ?>;
-        let inc = <?php echo json_encode($dataIncome) ?>;
-    </script>
-    <script src="js/chart.js"></script>
-    <script src="js/forms.js"></script>
+        <?php
+        require "config/connexion.php";
+
+        $requestExpense = "SELECT price, dueDate, Month(dueDate) as month FROM expense";
+        $queryExpense = mysqli_query($conn, $requestExpense);
+        $requestIncome = "SELECT price, getIncomeDate , Month(getIncomeDate) as month FROM income";
+        $queryincome = mysqli_query($conn, $requestIncome);
+        $dataExpense = [];
+        $dataIncome = [];
+
+        while ($row = mysqli_fetch_assoc($queryExpense)) {
+            $dataExpense[] = [
+                "price" => (float)$row["price"],
+                "date"  => $row["dueDate"],
+                "month" => $row["month"]
+            ];
+        }
+
+
+        while ($row = mysqli_fetch_assoc($queryincome)) {
+            $dataIncome[] = [
+                "price" => (float)$row["price"],
+                "date" => $row["getIncomeDate"],
+                "month" => $row["month"]
+            ];
+        }
+        ?>
+        <script>
+            let exp = <?php echo json_encode($dataExpense) ?>;
+            let inc = <?php echo json_encode($dataIncome) ?>;
+        </script>
+        <script src="js/chart.js"></script>
+        <script src="js/forms.js"></script>
 
 
 

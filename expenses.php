@@ -28,9 +28,11 @@
                 <a href="support.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600">Support</a>
             </div>
 
-            <button onclick="logout()" class="hidden lg:block bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition">
+             <a href="auth/logout.php">
+                <button class="hidden lg:block bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition">
                 Logout
-            </button>
+                </button>
+            </a>
         </nav>
     </header>
 
@@ -59,9 +61,10 @@
 
     <tbody>
         <?php
+        session_start();
         require "config/connexion.php";
-
-        $request = "SELECT * FROM expense";
+        $userId = $_SESSION['user_id'];
+        $request = "SELECT * FROM expense where user_id=$userId";
         $query = mysqli_query($conn, $request);
 
         while ($row = mysqli_fetch_assoc($query)) {
