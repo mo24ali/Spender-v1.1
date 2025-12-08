@@ -53,6 +53,7 @@
                     <th class="px-6 py-3 font-medium">Income Title</th>
                     <th class="px-6 py-3 font-medium">Description</th>
                     <th class="px-6 py-3 font-medium">Price</th>
+                    <th class="px-6 py-3 font-medium">Category</th>
                     <th class="px-6 py-3 font-medium">Due Date</th>
                     <th class="px-6 py-3 font-medium">Actions</th>
                 </tr>
@@ -75,6 +76,7 @@
                     echo "<td class='px-6 py-3'>" . htmlspecialchars($row['incomeTitle']) . "</td>";
                     echo "<td class='px-6 py-3'>" . htmlspecialchars($row['description']) . "</td>";
                     echo "<td class='px-6 py-3'>$" . htmlspecialchars($row['price']) . "</td>";
+                    echo "<td class='px-6 py-3'>" . htmlspecialchars($row['categorie']) . "</td>";
                     echo "<td class='px-6 py-3'>" . htmlspecialchars($row['getIncomeDate']) . "</td>";
 
                     echo "
@@ -123,6 +125,24 @@
 
             <label for="incomePrice" class="text-white"> Salary : </label>
             <input type="text" id="incomePrice" name="income_price" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white" value="<?php echo $income['price'] ?? ''; ?>">
+
+            <label for="incomeCategorie" class="text-white">Income category :</label>
+
+            <select id="incomeCategorie" name="income_categorie"
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+
+                <option value="" disabled selected>Select category</option>
+
+                <option value="salary" <?php if (($income['categorie'] ?? '') == 'salary') echo 'selected'; ?>>Salary</option>
+                <option value="freelance" <?php if (($income['categorie'] ?? '') == 'freelance') echo 'selected'; ?>>Freelance</option>
+                <option value="business" <?php if (($income['categorie'] ?? '') == 'business') echo 'selected'; ?>>Business</option>
+                <option value="investment" <?php if (($income['categorie'] ?? '') == 'investment') echo 'selected'; ?>>Investment</option>
+                <option value="gift" <?php if (($income['categorie'] ?? '') == 'gift') echo 'selected'; ?>>Gift</option>
+                <option value="other" <?php if (($income['categorie'] ?? '') == 'other') echo 'selected'; ?>>Other</option>
+
+            </select>
+
+
             <label for="incomeDate" class="text-white">Getting income date :</label>
             <input type="date" id="incomeDate" name="income_date" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white" value="<?php echo $income['getIncomeDate'] ?? ''; ?>">
             <button type="submit" id="validateIncome" class="rounded bg-blue-500 hover:bg-blue-300 hover:text-white transform duration-300 py-2 px-1">

@@ -21,6 +21,7 @@ CREATE TABLE expense (
     description TEXT,
     user_id INT NOT NULL,
     price DECIMAL(10,2) NOT NULL,
+    categorie TEXT,
     dueDate DATE,
     state VARCHAR(20) DEFAULT 'not paid',
     CONSTRAINT fk_expense_user FOREIGN KEY (user_id) REFERENCES users(userId)
@@ -32,6 +33,7 @@ CREATE TABLE income (
     description TEXT,
     user_id INT NOT NULL,
     price DECIMAL(10,2) NOT NULL,
+    categorie TEXT,
     getIncomeDate DATE,
     CONSTRAINT fk_income_user FOREIGN KEY (user_id) REFERENCES users(userId)
 );

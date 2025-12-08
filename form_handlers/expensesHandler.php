@@ -10,15 +10,16 @@ $title = $_POST['expense_title'];
 $desc  = $_POST['expense_description'];
 $price = $_POST['expense_price'];
 $date  = $_POST['expense_date'];
+$category = $_POST['expense_categorie'];
 
 $id = $_GET['id'] ?? null;
 $userId = $_SESSION['user_id'];
 if (!empty($id)) {
-    $exp->modifierExpense($id, $title, $desc, $price, $date);
+    $exp->modifierExpense($id, $title, $desc, $price,$category, $date);
     header("Location: ../expenses.php");
     exit;
 } else {
-    $exp->ajouterExpense($title, $desc, $price, $date,$userId);
+    $exp->ajouterExpense($title, $desc, $price,$category, $date,$userId);
     header("Location: ../expenses.php");
     exit;
 }

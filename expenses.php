@@ -53,6 +53,7 @@
                     <th class="px-6 py-3 font-medium">Expense Title</th>
                     <th class="px-6 py-3 font-medium">Description</th>
                     <th class="px-6 py-3 font-medium">Price</th>
+                    <th class="px-6 py-3 font-medium">Category</th>
                     <th class="px-6 py-3 font-medium">Due Date</th>
                     <th class="px-6 py-3 font-medium">Actions</th>
                 </tr>
@@ -75,6 +76,7 @@
                     echo "<td class='px-6 py-3'>" . htmlspecialchars($row['expenseTitle']) . "</td>";
                     echo "<td class='px-6 py-3'>" . htmlspecialchars($row['description']) . "</td>";
                     echo "<td class='px-6 py-3'>$" . htmlspecialchars($row['price']) . "</td>";
+                    echo "<td class='px-6 py-3'>" . htmlspecialchars($row['categorie']) . "</td>";
                     echo "<td class='px-6 py-3'>" . htmlspecialchars($row['dueDate']) . "</td>";
 
                     echo "
@@ -137,6 +139,24 @@
                 class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white"
                 value="<?php echo $expense['price'] ?? ''; ?>">
 
+            <label for="expenseCategorie" class="text-white">Expense category :</label>
+
+            <select id="expenseCategorie" name="expense_categorie"
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+
+                <option value="" disabled selected>Select category</option>
+
+                <option value="food" <?php if (($expense['categorie'] ?? '') == 'food') echo 'selected'; ?>>Food</option>
+                <option value="transport" <?php if (($expense['categorie'] ?? '') == 'transport') echo 'selected'; ?>>Transport</option>
+                <option value="bills" <?php if (($expense['categorie'] ?? '') == 'bills') echo 'selected'; ?>>Bills</option>
+                <option value="shopping" <?php if (($expense['categorie'] ?? '') == 'shopping') echo 'selected'; ?>>Shopping</option>
+                <option value="health" <?php if (($expense['categorie'] ?? '') == 'health') echo 'selected'; ?>>Health</option>
+                <option value="entertainment" <?php if (($expense['categorie'] ?? '') == 'entertainment') echo 'selected'; ?>>Entertainment</option>
+                <option value="other" <?php if (($expense['categorie'] ?? '') == 'other') echo 'selected'; ?>>Other</option>
+
+            </select>
+
+
             <label for="expenseDate" class="text-white">Due Date</label>
             <input type="date" id="expenseDate" name="expense_date"
                 class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white"
@@ -164,13 +184,13 @@
     </script>
 
     <script>
-      let form = document.getElementById("addExpenseForm");
-      form.addEventListener("submit",()=>{
-        let title = document.getElementById("expenseName").value.trim();
-        let description = document.getElementById("expenseDescription").value.trim();
-        let price = document.getElementById("expensePrice").value.trim();
-        let date = document.getElementById("expenseDate").value.trim();
-        document.querySelectorAll(".error-text").forEach(el => el.remove());
+        let form = document.getElementById("addExpenseForm");
+        form.addEventListener("submit", () => {
+            let title = document.getElementById("expenseName").value.trim();
+            let description = document.getElementById("expenseDescription").value.trim();
+            let price = document.getElementById("expensePrice").value.trim();
+            let date = document.getElementById("expenseDate").value.trim();
+            document.querySelectorAll(".error-text").forEach(el => el.remove());
 
             let valid = true;
 
@@ -197,15 +217,16 @@
             if (!valid) {
                 e.preventDefault();
             }
-        function showError(id, msg) {
-            const el = document.getElementById(id);
-            const error = document.createElement("div");
-            error.className = "error-text text-red-500 text-sm mt-1";
-            error.innerText = msg;
 
-            el.parentNode.insertBefore(error, el.nextSibling);
-        }
-      })
+            function showError(id, msg) {
+                const el = document.getElementById(id);
+                const error = document.createElement("div");
+                error.className = "error-text text-red-500 text-sm mt-1";
+                error.innerText = msg;
+
+                el.parentNode.insertBefore(error, el.nextSibling);
+            }
+        })
     </script>
 </body>
 
