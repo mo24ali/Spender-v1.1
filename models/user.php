@@ -10,22 +10,23 @@ class User
 
     public function register($firstname, $lastname, $email, $password)
     {
-
+        $hashedpass = sha1($password);
         $stmt = $this->conn->prepare(
             "INSERT INTO users (firstname, lastname, email, password) 
              VALUES (?, ?, ?, ?)"
         );
 
-        $stmt->bind_param("ssss", $firstname, $lastname, $email, $password);
+        $stmt->bind_param("ssss", $firstname, $lastname, $email, $hashedpass);
         return $stmt->execute();
     }
 
     public function login($email, $password)
     {
+        $hashedpass = sha1($password);
         $query = mysqli_query(
             $this->conn,
             "SELECT * FROM users 
-             WHERE email='$email' AND password='$password'"
+             WHERE email='$email' AND password='$hashedpass'"
         );
 
         if (mysqli_num_rows($query) == 1) {
