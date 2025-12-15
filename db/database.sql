@@ -5,113 +5,68 @@ CREATE DATABASE smart_wallet;
 USE smart_wallet;
 
 drop table income;
+
 drop table expense;
+
+drop table categories;
+
+drop table transactions;
+
+drop table users;
+
+
+--users(#userId , firstname, lastname, email, password, join_date)
+
 CREATE TABLE users (
-    userId INT PRIMARY KEY AUTO_INCREMENT,
+    userId INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(50) NOT NULL,
     lastname VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    join_date DATE DEFAULT (CURRENT_DATE)
+    join_date DATE DEFAULT CURRENT_DATE
 );
 
+--expense(#expenseId, expenseTitle, description, price, categorie , duedate, state , user_id#)
 CREATE TABLE expense (
     expenseId INT PRIMARY KEY AUTO_INCREMENT,
     expenseTitle VARCHAR(50) NOT NULL,
     description TEXT,
     user_id INT NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
     categorie TEXT,
     dueDate DATE,
     state VARCHAR(20) DEFAULT 'not paid',
-    CONSTRAINT fk_expense_user FOREIGN KEY (user_id) REFERENCES users(userId)
+    CONSTRAINT fk_expense_user FOREIGN KEY (user_id) REFERENCES users (userId)
 );
 
+--income(#incomeId, incomeTitle, description , price, categorie, getIncomeDate, user_id#)
 CREATE TABLE income (
     incomeId INT PRIMARY KEY AUTO_INCREMENT,
     incomeTitle VARCHAR(50) NOT NULL,
     description TEXT,
     user_id INT NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
     categorie TEXT,
     getIncomeDate DATE,
-    CONSTRAINT fk_income_user FOREIGN KEY (user_id) REFERENCES users(userId)
+    CONSTRAINT fk_income_user FOREIGN KEY (user_id) REFERENCES users (userId)
 );
---test--
+--categories(#categoryId, name)
+CREATE TABLE categories (
+    categoryId INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
 
-INSERT INTO
-    expense (expenseTitle, description, price, dueDate)
-VALUES
-    (
-        'Groceries',
-        'Weekly food shopping',
-        450.75,
-        '2025-12-02'
-    ),
-    (
-        'Electricity Bill',
-        'Monthly electricity payment',
-        320.00,
-        '2025-12-05'
-    ),
-    (
-        'Transport',
-        'Bus and taxi fares',
-        120.50,
-        '2025-12-01'
-    ),
-    (
-        'Internet',
-        'Home WiFi plan',
-        249.99,
-        '2025-12-07'
-    );
-
-INSERT INTO
-    income (incomeTitle, description, price, getIncomeDate)
-VALUES
-    (
-        'Salary',
-        'Monthly salary payment',
-        7500.00,
-        '2025-12-01'
-    ),
-    (
-        'Freelancing',
-        'Web development project',
-        2300.50,
-        '2025-12-03'
-    ),
-    (
-        'Scholarship',
-        'Student grant',
-        1000.00,
-        '2025-12-10'
-    );
-
-select
-    *
-from
-    income;
-
-select
-    *
-from
-    expense;
-
-alter table expense
-add state varchar(10);
-
-update expense
-set
-    state = 'not payed';
-
-    SELECT * FROM income where user_id=$userId
-    SELECT * FROM income WHERE incomeId = $modalId
-     SELECT * FROM expense where user_id=$userId
-    SELECT * FROM expense WHERE expenseId = $modalId
-
-    select SUM(i.price)-SUM(e.price) as total from income i ,expense e where i.user_id =$userId AND e.user_id=$userId AND MONTH(i.getIncomeDate) = '$month' AND MONTH(e.dueDate) = '$month'
-    select SUM(price) as total from expense where user_id=$userId AND MONTH(dueDate) = '$month'
-    select SUM(price) as total from income where user_id=$userId AND MONTH(getIncomeDate) = '$month'
-    
+-- transactions(#transactionId, title, description, type, amount , transaction_date, state, user_id#, category_id#)
+CREATE TABLE transactions (
+    transactionId INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(50) NOT NULL,
+    description TEXT,
+    user_id INT NOT NULL,
+    category_id INT,
+    type ENUM('income', 'expense') NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    transaction_date DATE NOT NULL,
+    state VARCHAR(20) DEFAULT 'not paid',
+    FOREIGN KEY (user_id) REFERENCES users (userId) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories (categoryId)
+);
