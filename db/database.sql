@@ -37,7 +37,7 @@ CREATE TABLE income (
     getIncomeDate DATE,
     CONSTRAINT fk_income_user FOREIGN KEY (user_id) REFERENCES users(userId)
 );
-
+--test--
 
 INSERT INTO
     expense (expenseTitle, description, price, dueDate)
