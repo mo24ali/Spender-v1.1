@@ -41,6 +41,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE expense (
+
     expenseId INT PRIMARY KEY AUTO_INCREMENT,
     expenseTitle VARCHAR(50) NOT NULL,
     description TEXT,
@@ -54,6 +55,7 @@ CREATE TABLE expense (
 );
 
 CREATE TABLE income (
+    
     incomeId INT PRIMARY KEY AUTO_INCREMENT,
     incomeTitle VARCHAR(50) NOT NULL,
     description TEXT,
