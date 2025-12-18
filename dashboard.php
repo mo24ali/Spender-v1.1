@@ -16,12 +16,15 @@
     session_start();
 ?>
 
-<body class="bg-gray-50 dark:bg-gray-900 dark:text-white">
+<body class="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 text-white">
 
     <!-- NAVBAR -->
-    <header class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm opacity-0 translate-y-[-50px]" id="navbar">
-        <nav class="max-w-7xl mx-auto flex items-center justify-between p-4">
-            <a href="index.php" class="text-2xl font-bold text-blue-600 dark:text-white">Spender</a>
+    <header class="sticky top-0 z-50 bg-gray-900/80 backdrop-blur border-b border-white/10 shadow-lg opacity-0 -translate-y-10" id="navbar">
+        <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+            <a href="index.php"
+                class="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+                Spender
+            </a>
             <div class="hidden lg:flex space-x-10">
                 <a href="dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Dashboard</a>
                 <a href="transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Transactions</a>

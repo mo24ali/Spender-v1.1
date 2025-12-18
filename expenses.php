@@ -9,7 +9,6 @@
 
     <script src="js/forms.js"></script>
     <script src="js/auth.js"></script>
-    <!-- <script src="js/validators.js"></script> -->
     <title>Expenses</title>
 </head>
 
@@ -19,17 +18,19 @@
     session_start();
 
     ?>
-    <!-- NAVBAR -->
-    <header class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm opacity-0 translate-y-[-50px]" id="navbar">
-        <nav class="max-w-7xl mx-auto flex items-center justify-between p-4">
-            <a href="index.php" class="text-2xl font-bold text-blue-600 dark:text-white">Spender</a>
+      <header class="sticky top-0 z-50 bg-gray-900/80 backdrop-blur border-b border-white/10 shadow-lg opacity-0 -translate-y-10" id="navbar">
+        <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+            <a href="index.php"
+                class="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+                Spender
+            </a>
             <div class="hidden lg:flex space-x-10">
                 <a href="dashboard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Dashboard</a>
                 <a href="transactions.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Transactions</a>
-                <a href="mycard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">My Cards</a>
+                <a href="mycard.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">My cards</a>
                 <a href="expenses.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Expenses</a>
                 <a href="incomes.php" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">Incomes</a>
-                
+
             </div>
             <a href="auth/logout.php">
                 <button id="" class="hidden lg:inline-block bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-500 transition lg:ml-4">
@@ -59,20 +60,17 @@
         </nav>
     </header>
     
-    <!-- MAIN CONTENT -->
     <main class="max-w-6xl mx-auto mt-20 px-4">
         <div class="flex flex-col mb-10 space-y-4">
-            <p class="text-gray-700 dark:text-gray-300 text-xl font-semibold">Liste des Dépences:</p>
-
+            <h2 class="text-center text-sm uppercase tracking-widest text-indigo-400">Liste des: </h2>
+            <h1 class="mt-2 text-center text-4xl font-bold mb-4">Dépences</h1>
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <!-- New Income Button -->
                 <button id="newPaymentsBtn"
                     class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition duration-200"
                     onclick="showAddExpenseModal()">
                     + New Expense
                 </button>
 
-                <!-- Filters Form -->
                 <form class="flex flex-col sm:flex-row items-center gap-2" method="get">
                     <select id="expenseMonth" name="expenseMonth"
                         class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
