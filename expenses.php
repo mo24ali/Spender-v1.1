@@ -245,6 +245,14 @@
 
             </select>
 
+            <label for="expenseRecurrency" class="text-white">Is it recurrent?</label>
+            <select id="expenseRecurrency" name="expense_recurrency"
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
+                
+                <option value="" disabled selected>recurrent</option>
+                <option value="YES"  <?php if (($expense['isRecurent'] ?? '') == 'YES') echo 'selected'; ?>>Yes</option>
+                <option value="NO" <?php if (($expense['isRecurent'] ?? '') == 'NO') echo 'selected'; ?>>No</option>
+            </select>
 
             <label for="expenseDate" class="text-white">Due Date</label>
             <input type="date" id="expenseDate" name="expense_date"

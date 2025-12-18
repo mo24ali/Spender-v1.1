@@ -232,7 +232,15 @@
 
             </select>
 
+            
+            <label for="incomeRecurrency" class="text-white">Is it recurrent?</label>
+            <select id="incomeRecurrency" name="income_recurrency"
+                class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
 
+                <option value="" disabled selected>recurrent</option>
+                <option value="YES"  <?php if (($income['isRecurent'] ?? '') == 'YES') echo 'selected'; ?>>Yes</option>
+                <option value="NO" <?php if (($income['isRecurent'] ?? '') == 'NO') echo 'selected'; ?>>No</option>
+            </select>
             <label for="incomeDate" class="text-white">Getting income date :</label>
             <input type="date" id="incomeDate" name="income_date" class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white" value="<?php echo $income['getIncomeDate'] ?? ''; ?>">
             <button type="submit" id="validateIncome" class="rounded bg-blue-500 hover:bg-blue-300 hover:text-white transform duration-300 py-2 px-1">

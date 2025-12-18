@@ -66,14 +66,14 @@ $userId = $_SESSION['user_id'];
                     <div class="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] lg:rounded-l-[calc(2rem+1px)]">
                         <div class="px-8 pt-8 sm:px-10 sm:pt-10 grid grid-cols-2">
                             <p class="mb-2 text-lg font-medium tracking-tight text-white max-lg:text-center">Expenses transactions</p>
-                            <p>Total paid: 
+                            <p>Total paid:
                                 <?php
-                                    $query = "select sum(price) as total from expense where state='paid'";
-                                    $request = mysqli_query($conn,$query);
-                                    $rows = mysqli_fetch_assoc($request);
-                                    echo $rows['total']." $" ;
+                                $query = "select sum(price) as total from expense where state='paid'";
+                                $request = mysqli_query($conn, $query);
+                                $rows = mysqli_fetch_assoc($request);
+                                echo $rows['total'] . " $";
 
-                                ?>    
+                                ?>
                             </p>
                         </div>
                         <table class="w-full text-sm text-left rtl:text-right text-body border border-default rounded-lg overflow-hidden">
@@ -86,14 +86,14 @@ $userId = $_SESSION['user_id'];
                             </thead>
                             <tbody>
                                 <?php
-                                    $query = "select expenseTitle, price , state from expense where user_id=$userId and state='paid'";
-                                    $request = mysqli_query($conn, $query);
-                                    while ($rows = mysqli_fetch_assoc($request)) {
-                                        echo "<tr class='odd:bg-neutral-primary-soft even:bg-neutral-secondary-soft border-b border-default hover:bg-neutral-secondary transition'>";
-                                        echo "  <td class='px-6 py-3'>".htmlspecialchars($rows['expenseTitle'])."</td>";
-                                        echo "  <td class='px-6 py-3'>".htmlspecialchars($rows['price'])."</td>";
-                                        echo "  <td class='px-6 py-3'>".htmlspecialchars($rows['state'])."✅"."</td>";
-                                    }
+                                $query = "select expenseTitle, price , state from expense where user_id=$userId and state='paid'";
+                                $request = mysqli_query($conn, $query);
+                                while ($rows = mysqli_fetch_assoc($request)) {
+                                    echo "<tr class='odd:bg-neutral-primary-soft even:bg-neutral-secondary-soft border-b border-default hover:bg-neutral-secondary transition'>";
+                                    echo "  <td class='px-6 py-3'>" . htmlspecialchars($rows['expenseTitle']) . "</td>";
+                                    echo "  <td class='px-6 py-3'>" . htmlspecialchars($rows['price']) . "</td>";
+                                    echo "  <td class='px-6 py-3'>" . htmlspecialchars($rows['state']) . "✅" . "</td>";
+                                }
                                 ?>
                             </tbody>
                         </table>
@@ -108,6 +108,53 @@ $userId = $_SESSION['user_id'];
                     <div class="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
                         <div class="px-8 pt-8 sm:px-10 sm:pt-10">
                             <p class="mt-2 text-lg font-medium tracking-tight text-white max-lg:text-center">Recurrente transactions</p>
+                            <table class="w-full text-sm text-left rtl:text-right text-body border border-default rounded-lg overflow-hidden">
+                                <thead class="bg-neutral-secondary-soft border-b border-default">
+                                    <tr>
+                                        <th class="px-6 py-3 font-medium">Title</th>
+                                        <th class="px-6 py-3 font-medium">Price</th>
+                                        <th class="px-6 py-3 font-medium">When ?</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+
+                                    $query = "
+                                                    SELECT 
+                                                        incomeTitle AS title,
+                                                        price,
+                                                        getIncomeDate AS event_date
+                                                    FROM income
+                                                    WHERE user_id=$userId AND isRecurent='YES'
+
+                                                    UNION
+
+                                                    SELECT 
+                                                        expenseTitle AS title,
+                                                        price,
+                                                        dueDate AS event_date
+                                                    FROM expense
+                                                    WHERE user_id=$userId AND isRecurent='YES'
+
+                                                    ORDER BY event_date;
+
+                                                    ";
+                                    $request = mysqli_query($conn, $query);
+
+                                    if (!$request) {
+                                        die(mysqli_error($conn));
+                                    }else{
+                                        while ($rows = mysqli_fetch_assoc($request)) {
+                                        echo "<tr class='odd:bg-neutral-primary-soft even:bg-neutral-secondary-soft border-b border-default hover:bg-neutral-secondary transition'>";
+                                        echo "  <td class='px-6 py-3'>" . htmlspecialchars($rows['title']) . "</td>";
+                                        echo "  <td class='px-6 py-3'>" . htmlspecialchars($rows['price']) . "</td>";
+                                        echo "  <td class='px-6 py-3'>" . htmlspecialchars($rows['event_date']) . "</td>";
+                                    }
+                                    }
+                                    
+                                    ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="pointer-events-none absolute inset-px rounded-lg shadow-sm outline outline-white/15 max-lg:rounded-t-4xl"></div>
@@ -120,7 +167,7 @@ $userId = $_SESSION['user_id'];
                             <p class="mt-2 max-w-lg text-sm/6 text-gray-400 max-lg:text-center">Chart</p>
                         </div>
                         <div class="@container flex flex-1 items-center max-lg:py-6 lg:pb-2">
-                            <img src="https://tailwindcss.com/plus-assets/img/component-images/dark-bento-03-security.png" alt="" class="h-[min(152px,40cqw)] object-cover" />
+
                         </div>
                     </div>
                     <div class="pointer-events-none absolute inset-px rounded-lg shadow-sm outline outline-white/15"></div>
@@ -128,15 +175,15 @@ $userId = $_SESSION['user_id'];
                 <div class="relative lg:row-span-2">
                     <div class="absolute inset-px rounded-lg bg-gray-800 max-lg:rounded-b-4xl lg:rounded-r-4xl"></div>
                     <div class="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] max-lg:rounded-b-[calc(2rem+1px)] lg:rounded-r-[calc(2rem+1px)]">
-                       <div class="px-8 pt-8 sm:px-10 sm:pt-10 grid grid-cols-2">
+                        <div class="px-8 pt-8 sm:px-10 sm:pt-10 grid grid-cols-2">
                             <p class="mb-2 text-lg font-medium tracking-tight text-white max-lg:text-center">Incomes transactions</p>
                             <p>
-                                Total gained: 
+                                Total gained:
                                 <?php
-                                    $query = " select sum(price) as total from income";
-                                    $request = mysqli_query($conn, $query);
-                                    $rows = mysqli_fetch_assoc($request);
-                                    echo $rows['total']." $";
+                                $query = " select sum(price) as total from income";
+                                $request = mysqli_query($conn, $query);
+                                $rows = mysqli_fetch_assoc($request);
+                                echo $rows['total'] . " $";
                                 ?>
                             </p>
                         </div>
@@ -150,14 +197,14 @@ $userId = $_SESSION['user_id'];
                             </thead>
                             <tbody>
                                 <?php
-                                    $query = "select incomeTitle, price , getIncomeDate from income where user_id=$userId";
-                                    $request = mysqli_query($conn, $query);
-                                    while ($rows = mysqli_fetch_assoc($request)) {
-                                        echo "<tr class='odd:bg-neutral-primary-soft even:bg-neutral-secondary-soft border-b border-default hover:bg-neutral-secondary transition'>";
-                                        echo "  <td class='px-6 py-3'>".htmlspecialchars($rows['incomeTitle'])."</td>";
-                                        echo "  <td class='px-6 py-3'>".htmlspecialchars($rows['price'])."</td>";
-                                        echo "  <td class='px-6 py-3'>".htmlspecialchars($rows['getIncomeDate'])."⬅️"."</td>";
-                                    }
+                                $query = "select incomeTitle, price , getIncomeDate from income where user_id=$userId";
+                                $request = mysqli_query($conn, $query);
+                                while ($rows = mysqli_fetch_assoc($request)) {
+                                    echo "<tr class='odd:bg-neutral-primary-soft even:bg-neutral-secondary-soft border-b border-default hover:bg-neutral-secondary transition'>";
+                                    echo "  <td class='px-6 py-3'>" . htmlspecialchars($rows['incomeTitle']) . "</td>";
+                                    echo "  <td class='px-6 py-3'>" . htmlspecialchars($rows['price']) . "</td>";
+                                    echo "  <td class='px-6 py-3'>" . htmlspecialchars($rows['getIncomeDate']) . "⬅️" . "</td>";
+                                }
                                 ?>
                             </tbody>
                         </table>

@@ -11,15 +11,16 @@ $desc  = $_POST['expense_description'];
 $price = $_POST['expense_price'];
 $date  = $_POST['expense_date'];
 $category = $_POST['expense_categorie'];
+$isRecurrent = $_POST['expense_recurrency'];
 
 $id = $_GET['id'] ?? null;
 $userId = $_SESSION['user_id'];
 if (!empty($id)) {
-    $exp->modifierExpense($id, $title, $desc, $price,$category, $date);
+    $exp->modifierExpense($id, $title, $desc, $price,$category, $date,$isRecurrent);
     header("Location: ../expenses.php");
     exit;
 } else {
-    $exp->ajouterExpense($title, $desc, $price,$category, $date,$userId);
+    $exp->ajouterExpense($title, $desc, $price,$category, $date,$userId,$isRecurrent);
     header("Location: ../expenses.php");
     exit;
 }
