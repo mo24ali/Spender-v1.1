@@ -134,5 +134,14 @@ CREATE TABLE carte (
     statue enum('Primary','Secondary') NOT NULL,
     expireDate DATE,
     num INT NOT NULL,
+    primary_statue_user INT
+        GENERATED ALWAYS AS (
+            CASE 
+                WHEN statue = 'Primary' THEN user_id
+                ELSE NULL
+            END
+        ) STORED,
+
+    UNIQUE KEY uniq_primary_statue_per_user (primary_statue_user),
     FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
 );
