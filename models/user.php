@@ -1,9 +1,14 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
 
-require '../vendor/autoload.php';
+$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
 class User
 {
     private $conn;
@@ -34,7 +39,6 @@ class User
         return $stmt->execute();
     }
 
-
     public function getUserIp()
     {
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -45,40 +49,43 @@ class User
             return $_SERVER['REMOTE_ADDR'];
         }
     }
-    public function sendOtpViaMail($email, $emailPassword, $otp) {
+    public function sendOtpViaMail( $toEmail,  $otp)
+    {
         $mail = new PHPMailer(true);
 
         try {
+           
             $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
+            $mail->Host       = $_ENV['MAIL_HOST'];
             $mail->SMTPAuth   = true;
-            $mail->Username   = $email; 
-            $mail->Password   = $emailPassword; 
+            $mail->Username   = $_ENV['MAIL_USERNAME'];
+            $mail->Password   = $_ENV['MAIL_PASSWORD'];
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            $mail->Port       = $_ENV['MAIL_PORT'];
 
-
-            /**
-             * 
-             * 
-             * need to generate a sender email and a password from the google app then put it in the .env file to use it later 
-             */
-            $mail->setFrom($email, 'Your App Name');
-            $mail->addAddress($email);
+           
+            $mail->setFrom($_ENV['MAIL_USERNAME'], 'spenderOTP');
+            $mail->addAddress($toEmail);
 
             $mail->isHTML(true);
             $mail->Subject = 'Your OTP Code';
-            $mail->Body    = "Hello!<br>Your OTP code is: <strong>$otp</strong><br>This code is valid for 5 minutes.";
+            $mail->Body = "
+            <p>Hello,</p>
+            <p>Your OTP code is:</p>
+            <h2>{$otp}</h2>
+            <p>This code is valid for <strong>5 minutes</strong>.</p>
+        ";
 
             $mail->send();
-            echo "OTP sent successfully!";
+            return true;
         } catch (Exception $e) {
-            echo "OTP could not be sent. Mailer Error: {$mail->ErrorInfo}";
-            
+            error_log('Mailer Error: ' . $mail->ErrorInfo);
+            return false;
         }
     }
 
-    public function login($email, $password) {
+    public function login($email, $password)
+    {
         $ip = $this->getUserIp();
 
         $stmt = $this->conn->prepare("SELECT userId, password, email FROM users WHERE email = ?");
@@ -111,17 +118,15 @@ class User
                     );
                     $otpStmt->bind_param("iis", $userId, $otp, $expires);
                     $otpStmt->execute();
-/////////////////////////////////////////////////////////////////
-                    $this->sendOtpViaMail($userEmail, 'rtyuio', $otp);
-/////////////////////////////////////////////////////////////////////////////////////
-                    // Store temporary session
+                    
+                    $this->sendOtpViaMail($userEmail, $otp);
+                    
                     $_SESSION['temp_user_id'] = $userId;
                     $_SESSION['temp_ip'] = $ip;
 
                     header("Location: ../index.php?verify_otp=true");
                     exit();
                 }
-
             } else {
                 echo "Wrong email or password";
             }

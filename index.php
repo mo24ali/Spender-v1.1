@@ -133,12 +133,22 @@
             <input type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg transition"
                 value="Connexion" name="connexion">
-            <a id="registerFormPipe" class="text-blue-600 hover:underline text-center cursor-pointer block">Create an account →</a>
+            <a id="registerFormPipe" href="auth/registerHelper.php?register=true" class="text-blue-600 hover:underline text-center cursor-pointer block">Create an account →</a>
         </form>
     </div>
 
     <!-- REGISTER MODAL -->
-    <div id="register" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 hidden">
+    <div id="register" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 
+    
+        <?php
+            if(!isset($_GET['register'])){
+                echo "hidden";
+            }else{
+                echo " ";
+            }
+
+        ?>
+    ">
         <form id="registerFormEl" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4"
             action="auth/registerFormHandler.php" method="POST">
             <h2 class="text-xl font-bold text-center dark:text-white">Register</h2>

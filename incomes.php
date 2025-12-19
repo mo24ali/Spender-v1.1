@@ -64,7 +64,7 @@
     <!-- MAIN CONTENT -->
     <main class="max-w-6xl mx-auto mt-20 px-4">
         <div class="flex flex-col mb-10 space-y-4">
-            <h2 class="text-center text-sm uppercase tracking-widest text-indigo-400">Liste des: </h2>
+            <h2 class="text-center text-sm uppercase tracking-widest text-indigo-400">List of: </h2>
             <h1 class="mt-2 text-center text-4xl font-bold mb-4">Incomes</h1>
 
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
