@@ -18,7 +18,7 @@
     session_start();
 
     ?>
-      <header class="sticky top-0 z-50 bg-gray-900/80 backdrop-blur border-b border-white/10 shadow-lg opacity-0 -translate-y-10" id="navbar">
+    <header class="sticky top-0 z-50 bg-gray-900/80 backdrop-blur border-b border-white/10 shadow-lg opacity-0 -translate-y-10" id="navbar">
         <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
             <a href="index.php"
                 class="text-2xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
@@ -59,7 +59,7 @@
             </div>
         </nav>
     </header>
-    
+
     <main class="max-w-6xl mx-auto mt-20 px-4">
         <div class="flex flex-col mb-10 space-y-4">
             <h2 class="text-center text-sm uppercase tracking-widest text-indigo-400">List of: </h2>
@@ -70,6 +70,10 @@
                     onclick="showAddExpenseModal()">
                     + New Expense
                 </button>
+                <a href="expenses.php?categoryLimit=true"
+                    class="px-3 py-1 bg-orange-500 text-white rounded hover:bg-orange-600 transform duration-300">
+                    Set Category Limit
+                </a>
 
                 <form class="flex flex-col sm:flex-row items-center gap-2" method="get">
                     <select id="expenseMonth" name="expenseMonth"
@@ -129,7 +133,7 @@
                 $catergory;
                 $monthFilter;
                 $priceSort;
-                if(isset($_GET['priceFilter'])){
+                if (isset($_GET['priceFilter'])) {
                     $priceSort = $_GET['priceFilter'];
                 }
                 if (isset($_GET['expenseCategory'])) {
@@ -141,8 +145,8 @@
                 $catergoryCondition = "";
                 $monthCondition = "";
                 $priceSortCondition = "";
-                if(isset($priceSort)){
-                        $priceSortCondition = "ORDER BY PRICE desc";
+                if (isset($priceSort)) {
+                    $priceSortCondition = "ORDER BY PRICE desc";
                 }
                 if (isset($catergory)) {
                     $catergoryCondition = "AND categorie= '$catergory'";
@@ -150,6 +154,10 @@
                 if (isset($monthFilter)) {
                     $monthCondition = "AND MONTH(dueDate) = '$monthFilter'";
                 }
+
+
+
+
                 $request = "SELECT * FROM expense where user_id=$userId and state='not paid' $catergoryCondition $monthCondition $priceSortCondition";
                 $query = mysqli_query($conn, $request);
 
@@ -175,10 +183,12 @@
                        class='px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition text-xs'>
                         Delete
                     </a>
-                    <a href='transactions_handler/payExpense.php?payed={$id}' 
+                    <button>
+                        <a href='transactions_handler/chooseCard.php?expenseId=$id' 
                        class='px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600 transition text-xs'>
                         Pay
                     </a>
+                    </button>
                 </td>
             ";
 
@@ -188,6 +198,103 @@
             </tbody>
         </table>
     </main>
+    <!-- SET MONTHLY LIMITS TO EACH CATEGORY -->
+
+    <!-- CATEGORY LIMIT MODAL -->
+    <div id="categoryLimitModal" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50
+    <?php echo isset($_GET['categoryLimit']) ? '' : 'hidden'; ?>
+">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
+            <h2 class="text-lg font-semibold mb-4">Set Category Limit</h2>
+
+            <form method="POST" action="categoryLimitHandler/categoryLimit.php" class="space-y-4">
+                
+                <label for="expenseCategoryLimit" class="block text-gray-700 font-medium">Category</label>
+                <select id="expenseCategoryLimit" name="categoryNameLimit"
+                    class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 w-full" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="food">Food</option>
+                    <option value="transport">Transport</option>
+                    <option value="bills">Bills</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="health">Health</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="monthlyLimit" class="block text-gray-700 font-medium">Monthly Limit</label>
+                <input type="number" min="0" step="0.01" id="monthlyLimit" name="monthly_limit"
+                    class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
+                    placeholder="Enter monthly limit" required>
+
+                <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+
+                <button type="submit" name="setLimit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 w-full">
+                    Save Limit
+                </button>
+            </form>
+
+            <a href="expenses.php" class="block text-center text-sm text-gray-500 mt-4">
+                Cancel
+            </a>
+        </div>
+    </div>
+
+
+
+    <!-- CHOOSE CARD MODAL -->
+    <div id="cardModal" class="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 
+    
+                <?php
+
+                if (!isset($_GET['chooseCard'])) {
+                    echo " hidden";
+                } else {
+                    echo " ";
+                }
+
+                ?>
+    ">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg w-96 space-y-4">
+
+            <h2 class="text-lg font-semibold mb-4">Choose a card</h2>
+
+            <?php
+            $cardQuery = "SELECT * FROM carte WHERE user_id = $userId";
+            $request = mysqli_query($conn, $cardQuery);
+            ?>
+            <?php while ($card = mysqli_fetch_assoc($request)): ?>
+                <div class="border p-3 rounded mb-2 flex justify-between items-center">
+                    <div>
+                        <p class="font-medium"><?= htmlspecialchars($card['nom']) ?></p>
+                        <p class="text-sm text-gray-600">
+                            Balance: <?= $card['currentSold'] ?> |
+                            Limit: <?= $card['limite'] ?>
+                        </p>
+
+                        <?php if ($card['statue'] === 'Primary'): ?>
+                            <span class="text-xs text-green-600 font-semibold">Primary</span>
+                        <?php endif; ?>
+                    </div>
+
+                    <form method="GET" action="transactions_handler/payExpense.php">
+                        <input type="hidden" name="payed" value="<?= isset($_GET['expenseId']) ? (int)$_GET['expenseId'] : 0 ?>">
+                        <input type="hidden" name="card" value="<?= htmlspecialchars($card['idCard']) ?>">
+                        <button class="px-3 py-1 bg-green-500 text-white rounded text-xs">
+                            Pay
+                        </button>
+                    </form>
+
+                </div>
+            <?php endwhile; ?>
+            <a href="expenses.php" class="block text-center text-sm text-gray-500 mt-4">
+                Cancel
+            </a>
+
+        </div>
+    </div>
+
     <!-- ADD EXPENSE MODAL -->
 
 
@@ -195,17 +302,17 @@
     <?php echo isset($_GET['id']) ? '' : 'hidden'; ?>">
 
         <?php
-            require "config/connexion.php";
+        require "config/connexion.php";
 
-            $expense = null;
-            $modalId = null;
+        $expense = null;
+        $modalId = null;
 
-            if (isset($_GET['id'])) {
-                $modalId = $_GET['id'];
-                $query = "SELECT * FROM expense WHERE expenseId = $modalId";
-                $request = mysqli_query($conn, $query);
-                $expense = mysqli_fetch_assoc($request);
-            }
+        if (isset($_GET['id'])) {
+            $modalId = $_GET['id'];
+            $query = "SELECT * FROM expense WHERE expenseId = $modalId";
+            $request = mysqli_query($conn, $query);
+            $expense = mysqli_fetch_assoc($request);
+        }
         ?>
 
         <form id="addExpenseForm" action="form_handlers/expensesHandler.php<?php echo "?id=" . $modalId ?>" method="post"
@@ -246,9 +353,9 @@
             <label for="expenseRecurrency" class="text-white">Is it recurrent?</label>
             <select id="expenseRecurrency" name="expense_recurrency"
                 class="w-full p-2 rounded-lg border dark:bg-gray-900 dark:text-white">
-                
+
                 <option value="" disabled selected>recurrent</option>
-                <option value="YES"  <?php if (($expense['isRecurent'] ?? '') == 'YES') echo 'selected'; ?>>Yes</option>
+                <option value="YES" <?php if (($expense['isRecurent'] ?? '') == 'YES') echo 'selected'; ?>>Yes</option>
                 <option value="NO" <?php if (($expense['isRecurent'] ?? '') == 'NO') echo 'selected'; ?>>No</option>
             </select>
 

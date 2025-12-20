@@ -6,20 +6,27 @@ USE smart_wallet;
 
 -- Drop child tables first
 DROP TABLE IF EXISTS otp_codes;
+
 DROP TABLE IF EXISTS user_ips;
+
 DROP TABLE IF EXISTS login_logs;
+
 DROP TABLE IF EXISTS notifications;
+
 DROP TABLE IF EXISTS transactions;
+
 DROP TABLE IF EXISTS income;
+
 DROP TABLE IF EXISTS expense;
+
 DROP TABLE IF EXISTS carte;
+
 DROP TABLE IF EXISTS transfert;
 -- Drop parent tables last
 DROP TABLE IF EXISTS categories;
+
 DROP TABLE IF EXISTS users;
 
-
- 
 -- users(#userId , firstname, lastname, email, password, join_date)
 -- expense(#expenseId, expenseTitle, description, price, categorie , duedate, state , user_id#)
 -- income(#incomeId, incomeTitle, description , price, categorie, getIncomeDate, user_id#)
@@ -41,7 +48,6 @@ CREATE TABLE users (
 );
 
 CREATE TABLE expense (
-
     expenseId INT PRIMARY KEY AUTO_INCREMENT,
     expenseTitle VARCHAR(50) NOT NULL,
     description TEXT,
@@ -49,13 +55,12 @@ CREATE TABLE expense (
     price DECIMAL(10, 2) NOT NULL,
     categorie TEXT,
     dueDate DATE,
-    isRecurent ENUM('YES','NO'),
+    isRecurent ENUM('YES', 'NO'),
     state VARCHAR(20) DEFAULT 'not paid',
     CONSTRAINT fk_expense_user FOREIGN KEY (user_id) REFERENCES users (userId)
 );
 
 CREATE TABLE income (
-    
     incomeId INT PRIMARY KEY AUTO_INCREMENT,
     incomeTitle VARCHAR(50) NOT NULL,
     description TEXT,
@@ -63,7 +68,7 @@ CREATE TABLE income (
     price DECIMAL(10, 2) NOT NULL,
     categorie TEXT,
     getIncomeDate DATE,
-    isRecurent ENUM('YES','NO'),
+    isRecurent ENUM('YES', 'NO'),
     CONSTRAINT fk_income_user FOREIGN KEY (user_id) REFERENCES users (userId)
 );
 
@@ -91,8 +96,7 @@ CREATE TABLE user_ips (
     user_id INT NOT NULL,
     ip_address VARCHAR(45) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users (userId) ON DELETE CASCADE
 );
 
 CREATE TABLE otp_codes (
@@ -102,17 +106,20 @@ CREATE TABLE otp_codes (
     expires_at DATETIME NOT NULL,
     used TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users (userId) ON DELETE CASCADE
 );
 
 CREATE TABLE login_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     ip_address VARCHAR(45),
-    status ENUM('SUCCESS', 'FAILED', 'OTP_REQUIRED'),
+    status ENUM(
+        'SUCCESS',
+        'FAILED',
+        'OTP_REQUIRED'
+    ),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users (userId) ON DELETE CASCADE
 );
 
 CREATE TABLE notifications (
@@ -121,8 +128,7 @@ CREATE TABLE notifications (
     message TEXT NOT NULL,
     seen TINYINT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users (userId) ON DELETE CASCADE
 );
 
 CREATE TABLE carte (
@@ -131,21 +137,18 @@ CREATE TABLE carte (
     user_id INT NOT NULL,
     currentSold INT NOT NULL DEFAULT 0,
     limite INT NOT NULL DEFAULT 0,
-    statue enum('Primary','Secondary') NOT NULL,
+    statue enum('Primary', 'Secondary') NOT NULL,
     expireDate DATE,
     num INT NOT NULL,
-    primary_statue_user INT
-        GENERATED ALWAYS AS (
-            CASE 
-                WHEN statue = 'Primary' THEN user_id
-                ELSE NULL
-            END
-        ) STORED,
-
+    primary_statue_user INT GENERATED ALWAYS AS (
+        CASE
+            WHEN statue = 'Primary' THEN user_id
+            ELSE NULL
+        END
+    ) STORED,
     UNIQUE KEY uniq_primary_statue_per_user (primary_statue_user),
-    FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users (userId) ON DELETE CASCADE
 );
-
 
 CREATE TABLE transfert (
     transferId INT PRIMARY KEY AUTO_INCREMENT,
@@ -154,4 +157,11 @@ CREATE TABLE transfert (
     amount INT NOT NULL,
     daySent DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+ -- modifying the categories table
+ALTER TABLE categories
+ADD monthly_limit DECIMAL(10, 2) NOT NULL DEFAULT 0;
+ALTER TABLE categories
+ADD COLUMN user_id INT NOT NULL,
+ADD CONSTRAINT fk_categories_user
+FOREIGN KEY (user_id) REFERENCES users(userId) ON DELETE CASCADE;
 
